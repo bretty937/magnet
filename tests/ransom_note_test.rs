@@ -2,7 +2,7 @@ use std::fs;
 
 use magnet::core::config::Config;
 use magnet::core::simulation::Simulation;
-use magnet::platforms::windows::actions::ransom_note::RansomNote;
+use magnet::platforms::windows::actions::ransomware_sim::RansomSimulation;
 use dirs::desktop_dir;
 
 /// This test runs the RansomNote simulation and verifies that
@@ -24,7 +24,7 @@ fn test_ransom_note_creates_file_on_desktop() {
 
     // 4. Run the simulation (writes the file)
     let cfg = Config::default();
-    let ransom = RansomNote::default();
+    let ransom = RansomSimulation::default();
     ransom.run(&cfg).expect("RansomNote simulation failed");
 
     // 5. Assert the file now exists

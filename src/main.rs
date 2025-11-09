@@ -81,10 +81,10 @@ fn main() -> Result<()> {
     #[cfg(target_os = "windows")]
     {
         use platforms::windows::actions::discovery_sim::DiscoverySim;
-        use platforms::windows::actions::ransom_note::RansomNote;
+        use platforms::windows::actions::ransomware_sim::RansomSimulation;
         use platforms::windows::actions::wifi_creds::WifiCreds;
 
-        runner.register(Box::new(RansomNote::default()));
+        runner.register(Box::new(RansomSimulation::default()));
         runner.register(Box::new(DiscoverySim::default()));
         runner.register(Box::new(WifiCreds::default()));
     }
