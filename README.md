@@ -56,7 +56,7 @@ Each binary only includes the modules for that platform.
 > [!WARNING]  
 > First compilation may take some minutes.  
 
-
+## Modules
 
 list modules
 ```bash
@@ -76,6 +76,15 @@ magnet run windows discovery_sim ransomware_sim high_cpu_miner_sim
 > [!CAUTION]  
 > Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity but some of the modules may still be detected by EDRs:       
 > **USE WITH CAUTION AND RUN ONLY ON AUTHORIZED SYSTEMS !!**  
+
+
+### Write new modules
+In order to add a module/action, follow these instructions:  
+- write the module inside the parent OS folder, for example [*here*](./src/platforms/windows/actions/) are all the windows ones.
+- add the module in [*mod.rs*](./src/platforms/windows/actions/mod.rs).
+- register the runner in [*main.rs*](./src/main.rs).  
+
+
 
 
 ## activity logs  
