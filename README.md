@@ -1,6 +1,6 @@
 ﻿# Magnet  
 
-[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)  ![language](https://img.shields.io/badge/poweredby-rust-orange) ![Red Team Badge](https://img.shields.io/badge/Team-Red-red) ![Purple Team Badge](https://img.shields.io/badge/Team-Purple-purple)
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)  ![language](https://img.shields.io/badge/poweredby-rust-orange) ![Purple Team Badge](https://img.shields.io/badge/Team-Purple-purple)
 
 <img src="./media/logo.png" alt="Magnet Logo" width="200">  
 
@@ -13,20 +13,25 @@
 
 
 **Magnet** is Purple-team telemetry & simulation toolkit.  
-**Purpose:** modular, cross-platform (eventually) generator for benign telemetry and purple-team exercises.  
-Why the name?  
-Because this attracts SOC analysts and detection rules! 😜  
-As a secondary use case, Magnet can also be used as a decoy during red team engagements, in order to generate false positives noise and distract defenders. 
+**Purpose:** modular, cross-platform (eventually) generator for telemetry and malicious activity.  
+> Why the name?    
+> Because this attracts SOC analysts and detection rules! 😜   
+
+
+As a secondary use case, Magnet can also be used as a decoy during red team engagements, in order to generate false positives noise and distract defenders.  
 From an architectural standpoint, Magnet is modular, allowing you to create as many modules as you like and modify existing ones without necessarily affecting the others.  
 
 
-
 > [!CAUTION]  
-> Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity but some of the modules may still be detected by EDRs:    
-> **TEST ONLY ON AUTHORIZED SYSTEMS**.  
-> The tool is best suited for on-the-fly demonstration/detection testing and does not replace fully fledged purple-team exercises conducted by experienced red teamers.    
->  
-> The project is still in its early stages of development and may contain bugs: contributions are very welcome!
+> The project is still in its early stages of development and may contain bugs: **contributions are very welcome!**  
+> The tool is best suited for on-the-fly demonstration/detection testing and does not replace fully fledged purple-team exercises conducted by experienced red teamers.   
+
+
+## Ok, but why?  
+What better way to assess the utility of this tool than by directly examining one of its modules?  
+Consider, for example, the [*Ransomware Simulation for Windows*](./src/platforms/windows/actions/ransomware_sim.rs) action:   
+it generates thousands of files and encrypts them, attempts to delete shadow copies with older timestamps, and finally places a ransom note on the desktop.    
+This module demonstrates its value for testing detection rules and behavioral analytics specifically designed to identify ransomware activity.  
 
 
 ## Quickstart
@@ -65,8 +70,13 @@ magnet run windows all
 
 Run some of the windows modules:  
 ```bash
-magnet run windows discovery_sim ransomware_sim high_cou_miner_sim
+magnet run windows discovery_sim ransomware_sim high_cpu_miner_sim
 ```  
+
+> [!CAUTION]  
+> Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity but some of the modules may still be detected by EDRs:       
+> **USE WITH CAUTION AND RUN ONLY ON AUTHORIZED SYSTEMS !!**  
+
 
 ## activity logs  
 For each execution, Magnet writes detailed activity logs (in various formats) to
