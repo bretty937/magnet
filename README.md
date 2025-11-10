@@ -22,8 +22,9 @@ From an architectural standpoint, Magnet is modular, allowing you to create as m
 
 
 > [!CAUTION]  
-> Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity.  
-> It is best suited for on-the-fly demonstration/detection testing and does not replace fully fledged purple-team exercises conducted by experienced red teamers.  
+> Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity but some of the modules may still be detected by EDRs:    
+> **TEST ONLY ON AUTHORIZED SYSTEMS**.  
+> The tool is best suited for on-the-fly demonstration/detection testing and does not replace fully fledged purple-team exercises conducted by experienced red teamers.    
 >  
 > The project is still in its early stages of development and may contain bugs: contributions are very welcome!
 
