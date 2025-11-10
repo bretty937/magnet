@@ -13,7 +13,7 @@ pub fn init() {
 /// Print the app header
 pub fn header(version: &str) {
     let crown = "🧲".bright_red();
-    let title = format!(" MAGNET — Purple Simulation Framework v{}", version)
+    let title = format!(" MAGNET —  Purple-team telemetry & simulation toolkit v{}", version)
         .bold()
         .on_bright_magenta()
         .white();
