@@ -24,3 +24,10 @@ num_cpus = "1.16"
 [lib]
 name = "magnet"
 path = "src/lib.rs"
+
+[profile.release]
+opt-level = "z"       # prioritize size over speed
+lto = true             # enable link-time optimization
+codegen-units = 1      # better optimization, smaller output
+strip = true           # remove debug symbols (nightly/beta Cargo only)
+panic = "abort"        # smaller runtime, no unwinding tables

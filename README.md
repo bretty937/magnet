@@ -7,9 +7,23 @@
 
 > Draw the Signals, Detect the Threats.  
 
-Magnet is Purple-team telemetry & simulation toolkit.
 
-**Purpose:** modular, cross-platform (eventually) generator for benign telemetry and purple-team exercises.
+
+## Abstract  
+
+
+**Magnet** is Purple-team telemetry & simulation toolkit.  
+**Purpose:** modular, cross-platform (eventually) generator for benign telemetry and purple-team exercises.  
+Why the name?  
+Because this attracts SOC analysts and detection rules! 😜  
+As a secondary use case, Magnet can also be used as a decoy during red team engagements, in order to generate false positives noise and distract defenders.   
+
+
+> [!CAUTION]  
+> Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity.  
+> It is best suited for on-the-fly demonstration/detection testing and does not replace fully fledged purple-team exercises conducted by experienced red teamers.  
+>  
+> The project is still in its early stages of development and may contain bugs: contributions are very welcome!
 
 
 ## Quickstart
@@ -36,18 +50,20 @@ list modules
 magnet list
 ``` 
 
+Run all windows modules:  
 ```bash
 magnet run windows all
 ```   
 
-
+Run some of the windows modules:  
 ```bash
-magnet run windows discovery_sim
+magnet run windows discovery_sim ransomware_sim high_cou_miner_sim
 ```  
 
 
 
-## tests
+### tests  
+Some modules already implement unit testing, for example:  
 ```bash
 cargo test --test ransom_note_test
 ```  
@@ -55,3 +71,12 @@ cargo test --test ransom_note_test
 ![ransom_note_test](./media/ransom_note_unit_test.png)  
 
 
+## Video Demo  
+
+
+
+
+## To-Do
+
+- [ ] Add other windows modules
+- [ ] Add linux modules
