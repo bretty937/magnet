@@ -20,7 +20,7 @@
 > Because this attracts SOC analysts and detection rules! 😜   
 
 
-As a secondary use case, Magnet can also be used as a decoy during red team engagements, in order to generate false positives noise and distract defenders.  
+As a secondary use case, Magnet can also be used as a decoy during red team engagements, in order to generate false positives noise and distract defenders 😈    
 From an architectural standpoint, Magnet is modular, allowing you to create as many modules as you like and modify existing ones without necessarily affecting the others.  
 
 
@@ -87,12 +87,13 @@ magnet run windows discovery_sim ransomware_sim high_cpu_miner_sim
 > Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity but some of the modules may still be detected by EDRs:       
 > **USE WITH CAUTION AND RUN ONLY ON AUTHORIZED SYSTEMS !!**  
 
+> [!TIP]
+> In order to add a module/action, follow these instructions:    
+> - write the module inside the parent OS folder, for example [*here*](./src/platforms/windows/actions/) are all the windows ones.  
+> - add the module in [*mod.rs*](./src/platforms/windows/actions/mod.rs).  
+> - register the runner in [*main.rs*](./src/main.rs).  
+> **For seamless integration, make sure new modules follow signatures and contracts of existing ones**  
 
-### Write new modules
-In order to add a module/action, follow these instructions:  
-- write the module inside the parent OS folder, for example [*here*](./src/platforms/windows/actions/) are all the windows ones.
-- add the module in [*mod.rs*](./src/platforms/windows/actions/mod.rs).
-- register the runner in [*main.rs*](./src/main.rs).  
 
 
 
