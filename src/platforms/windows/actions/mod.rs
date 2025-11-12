@@ -9,3 +9,4 @@ pub mod ps_elev_whoami;
 pub mod add_admin_user;
 pub mod open_many_windows;
 pub mod ps_defender_exclusions;
+pub mod scheduled_task_sim;

@@ -91,6 +91,7 @@ fn main() -> Result<()> {
         use platforms::windows::actions::add_admin_user::AdminUserAddSimulation;
         use platforms::windows::actions::open_many_windows::OpenManyWindowsSimulation;
         use platforms::windows::actions::ps_defender_exclusions::PsDefenderExclusions;
+        use platforms::windows::actions::scheduled_task_sim::ScheduledTaskSim;
 
         runner.register(Box::new(RansomSimulation::default()));
         runner.register(Box::new(DiscoverySim::default()));
@@ -103,6 +104,7 @@ fn main() -> Result<()> {
         runner.register(Box::new(AdminUserAddSimulation::default()));
         runner.register(Box::new(OpenManyWindowsSimulation::default()));
         runner.register(Box::new(PsDefenderExclusions::default()));
+        runner.register(Box::new(ScheduledTaskSim::default()));
     }
 
     // Helper: collect modules grouped by OS
