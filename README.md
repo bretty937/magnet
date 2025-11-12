@@ -66,6 +66,12 @@ Each binary only includes the modules for that platform.
 > [!WARNING]  
 > First compilation may take some minutes.  
 
+
+As of now, this tool has been tested on the following OS:  
+
+- `Windows 11 Pro Education 10.0.22631 22631`  
+
+
 ## Modules
 
 list modules
