@@ -84,6 +84,7 @@ magnet run windows discovery_sim ransomware_sim high_cpu_miner_sim
 ```  
 
 > [!CAUTION]  
+> **Some modules require administrative privileges to run**.  
 > Magnet prioritizes non-intrusive modules that only aim to simulate suspicious or malicious activity but some of the modules may still be detected by EDRs:       
 > **USE WITH CAUTION AND RUN ONLY ON AUTHORIZED SYSTEMS !!**  
 
