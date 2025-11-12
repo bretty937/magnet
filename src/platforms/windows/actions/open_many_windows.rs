@@ -1,3 +1,5 @@
+//! Simulates rapid creation of multiple top-level overlapped windows via the Win32 API.
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::telemetry::{ActionRecord, write_action_record};

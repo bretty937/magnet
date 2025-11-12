@@ -1,3 +1,5 @@
+//! Executes some common discovery commands.
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::logger;

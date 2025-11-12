@@ -1,3 +1,5 @@
+//! Reetrieves wifi credentials stored in windows.  
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::logger;

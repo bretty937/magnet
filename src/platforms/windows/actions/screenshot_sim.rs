@@ -1,3 +1,5 @@
+//! Simulates a program that takes screenshots.  
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::telemetry::{ActionRecord, write_action_record};

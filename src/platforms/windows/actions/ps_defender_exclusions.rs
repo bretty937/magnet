@@ -1,4 +1,5 @@
 //! Adds Windows Defender exclusion paths via PowerShell for testing and simulation.
+//! This action requires admin privileges to run.
 
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;

@@ -1,3 +1,5 @@
+//! Executes an embedded (safe) test payload via in-memory execution to validate process-injection detection.
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::logger;
@@ -99,7 +101,7 @@ impl ProcInjSim {
     /// This function purposely avoids mutating outer `String`s inside `catch_unwind`.
     #[cfg(target_os = "windows")]
     fn execute_shellcode(&self, cfg: &Config) -> Result<()> {
-        // Embedded shellcode (same bytes you provided)
+        // Embedded shellcode (safe: calc.exe)
         let shellcode: [u8; 276] = [
             0xfc, 0x48, 0x83, 0xe4, 0xf0, 0xe8, 0xc0, 0x00, 0x00, 0x00, 0x41, 0x51, 0x41, 0x50, 0x52,
             0x51, 0x56, 0x48, 0x31, 0xd2, 0x65, 0x48, 0x8b, 0x52, 0x60, 0x48, 0x8b, 0x52, 0x18, 0x48,

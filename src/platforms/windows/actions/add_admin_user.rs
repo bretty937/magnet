@@ -1,3 +1,6 @@
+//! Create new windows admin user. 
+//! This action requires admin privileges to run.
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::telemetry::{ActionRecord, write_action_record};

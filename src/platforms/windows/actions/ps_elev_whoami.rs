@@ -1,3 +1,6 @@
+//! Open powershell as administrator and launch a simple command.
+//! This action is not fully automated but requires user manual interaction.
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::telemetry::{ActionRecord, write_action_record};

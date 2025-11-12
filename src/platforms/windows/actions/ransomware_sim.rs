@@ -1,3 +1,5 @@
+//! Simulates realistic ransomware behavior for purple-team testing.
+
 use crate::core::config::Config;
 use crate::core::simulation::Simulation;
 use crate::core::telemetry::{ActionRecord, write_action_record};
