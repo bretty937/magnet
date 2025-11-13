@@ -16,7 +16,7 @@ use windows_sys::Win32::{
     UI::WindowsAndMessaging::*,
 };
 
-/// Simulation that opens and closes 250 windows using the Windows API.
+/// Simulation that opens and closes 150 windows using the Windows API.
 #[derive(Default)]
 pub struct OpenManyWindowsSimulation;
 
@@ -26,10 +26,10 @@ impl Simulation for OpenManyWindowsSimulation {
     }
 
     fn run(&self, cfg: &Config) -> Result<()> {
-        logger::action_running("Opening 250 GUI windows and closing them (Windows API test)");
+        logger::action_running("Opening 150 GUI windows and closing them (Windows API test)");
 
         if cfg.dry_run {
-            logger::info("dry-run: would create 250 windows via CreateWindowExW and close them");
+            logger::info("dry-run: would create 150 windows via CreateWindowExW and close them");
             let rec = ActionRecord {
                 test_id: cfg.test_id.clone(),
                 timestamp: Utc::now().to_rfc3339(),
@@ -75,9 +75,9 @@ impl Simulation for OpenManyWindowsSimulation {
                 anyhow::bail!("RegisterClassW failed");
             }
 
-            let mut windows: Vec<HWND> = Vec::with_capacity(250);
+            let mut windows: Vec<HWND> = Vec::with_capacity(150);
 
-            for i in 1..=250 {
+            for i in 1..=150 {
                 let title = format!("hello from Magnet - window n. {}", i);
                 let wide: Vec<u16> = title.encode_utf16().chain(std::iter::once(0)).collect();
 
@@ -120,7 +120,7 @@ impl Simulation for OpenManyWindowsSimulation {
         }
 
         let elapsed = start.elapsed().as_millis();
-        logger::info(&format!("Created and closed 250 windows in {} ms", elapsed));
+        logger::info(&format!("Created and closed 150 windows in {} ms", elapsed));
 
         // Write telemetry
         let rec = ActionRecord {
@@ -128,7 +128,7 @@ impl Simulation for OpenManyWindowsSimulation {
             timestamp: Utc::now().to_rfc3339(),
             action: self.name().into(),
             status: "completed".into(),
-            details: format!("Opened and closed 250 windows in {} ms", elapsed),
+            details: format!("Opened and closed 150 windows in {} ms", elapsed),
             artifact_path: None,
         };
         let _ = write_action_record(cfg, &rec);
