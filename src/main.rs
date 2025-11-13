@@ -78,43 +78,48 @@ fn main() -> Result<()> {
     // build runner and register modules
     let mut runner = Runner::new(config);
 
-    #[cfg(target_os = "windows")]
+   #[cfg(target_os = "windows")]
     {
-        use platforms::windows::actions::discovery_sim::DiscoverySim;
-        use platforms::windows::actions::ransomware_sim::RansomSimulation;
-        use platforms::windows::actions::wifi_creds::WifiCreds;
-        use platforms::windows::actions::proc_inj::ProcInjSim;
-        use platforms::windows::actions::screenshot_sim::ScreenshotSimulation;
-        use platforms::windows::actions::http_traffic_sim::HttpTrafficSimulation;
-        use platforms::windows::actions::high_cpu_miner_sim::HighCpuMinerSimulation;
-        use platforms::windows::actions::ps_elev_whoami::PsElevWhoami;
-        use platforms::windows::actions::add_admin_user::AdminUserAddSimulation;
-        use platforms::windows::actions::open_many_windows::OpenManyWindowsSimulation;
-        use platforms::windows::actions::ps_defender_exclusions::PsDefenderExclusions;
-        use platforms::windows::actions::scheduled_task_sim::ScheduledTaskSim;
-        use platforms::windows::actions::minidump_proc::MinidumpProc;
-        use platforms::windows::actions::browser_pwd::BrowserPwdSimulation;
-        use platforms::windows::actions::enable_rdp::EnableRdpSimulation;
-        use platforms::windows::actions::share_enum::ShareEnumSimulation;
+        use platforms::windows::actions::{
+            discovery_sim::DiscoverySim,
+            ransomware_sim::RansomSimulation,
+            wifi_creds::WifiCreds,
+            proc_inj::ProcInjSim,
+            screenshot_sim::ScreenshotSimulation,
+            http_traffic_sim::HttpTrafficSimulation,
+            high_cpu_miner_sim::HighCpuMinerSimulation,
+            ps_elev_whoami::PsElevWhoami,
+            add_admin_user::AdminUserAddSimulation,
+            open_many_windows::OpenManyWindowsSimulation,
+            ps_defender_exclusions::PsDefenderExclusions,
+            scheduled_task_sim::ScheduledTaskSim,
+            minidump_proc::MinidumpProc,
+            browser_pwd::BrowserPwdSimulation,
+            enable_rdp::EnableRdpSimulation,
+            share_enum::ShareEnumSimulation,
+        };
 
-        runner.register(Box::new(RansomSimulation::default()));
-        runner.register(Box::new(DiscoverySim::default()));
-        runner.register(Box::new(WifiCreds::default()));
-        runner.register(Box::new(ProcInjSim::default()));
-        runner.register(Box::new(ScreenshotSimulation::default()));
-        runner.register(Box::new(HttpTrafficSimulation::default()));
-        runner.register(Box::new(HighCpuMinerSimulation::default()));
-        runner.register(Box::new(PsElevWhoami::default()));
-        runner.register(Box::new(AdminUserAddSimulation::default()));
-        runner.register(Box::new(OpenManyWindowsSimulation::default()));
-        runner.register(Box::new(PsDefenderExclusions::default()));
-        runner.register(Box::new(ScheduledTaskSim::default()));
-        runner.register(Box::new(ScheduledTaskSim::default()));
-        runner.register(Box::new(MinidumpProc::default()));
-        runner.register(Box::new(BrowserPwdSimulation::default()));
-        runner.register(Box::new(EnableRdpSimulation::default()));
-        runner.register(Box::new(ShareEnumSimulation::default()));
+        register_windows_actions!(
+            runner,
+            RansomSimulation,
+            DiscoverySim,
+            WifiCreds,
+            ProcInjSim,
+            ScreenshotSimulation,
+            HttpTrafficSimulation,
+            HighCpuMinerSimulation,
+            PsElevWhoami,
+            AdminUserAddSimulation,
+            OpenManyWindowsSimulation,
+            PsDefenderExclusions,
+            ScheduledTaskSim,
+            MinidumpProc,
+            BrowserPwdSimulation,
+            EnableRdpSimulation,
+            ShareEnumSimulation,
+        );
     }
+
 
     // Helper: collect modules grouped by OS
     let modules_by_os = collect_modules_by_os(&runner);
