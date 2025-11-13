@@ -25,7 +25,7 @@ const XOR_KEY: u8 = 0xAA;
 /// Create a realistic but safe ransomware simulation:
 /// - create a test repo and N files
 /// - encrypt those files (XOR) in-place (only within the repo)
-/// - simulate deletion of the "oldest shadow copy" by creating and deleting a fake file
+/// - Delete the oldest shadow copy of C:
 /// - finally create the ransom note on the Desktop
 #[derive(Default)]
 pub struct RansomSimulation;
