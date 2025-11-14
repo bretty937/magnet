@@ -1,6 +1,6 @@
-//! Windows SSH enabling module.
+//! Windows WinRM enabling module.
 //!
-//! This module installs/starts OpenSSH Server and ensures port 22 is open,
+//! This module enables/starts WinRM, configures firewall rules, and confirms WinRM is reachable on TCP port 5985.
 //! This action requires admin privileges to run.
 
 use crate::core::config::Config;
@@ -15,19 +15,20 @@ use serde::Serialize;
 use std::fs::{create_dir_all, OpenOptions};
 use std::io::Write;
 use std::net::TcpStream;
-use std::path::PathBuf;
+use std::path::{PathBuf};
 use std::process::Command;
 use std::time::Instant;
 
 #[derive(Default)]
-pub struct EnableSshSimulation;
+pub struct EnableWinRMSimulation;
 
 #[derive(Serialize)]
-struct EnableSshTelemetry {
+struct EnableWinRmTelemetry {
     test_id: String,
     timestamp: String,
-    ssh_status: String,
+    winrm_status: String,
     commands_run: Vec<String>,
+    firewall_status: String,
     port_check: String,
     elapsed_ms: u128,
     parent: String,
@@ -56,32 +57,38 @@ fn run_ps(cmd: &str) -> Result<()> {
     Ok(())
 }
 
-impl Simulation for EnableSshSimulation {
+impl Simulation for EnableWinRMSimulation {
     fn name(&self) -> &'static str {
-        "windows::enable_ssh"
+        "windows::enable_winrm"
     }
 
     fn run(&self, cfg: &Config) -> Result<()> {
         let start = Instant::now();
 
         // -----------------------------------------------------
-        // Command list identical to PA
+        // WinRM Commands (now fully robust)
         // -----------------------------------------------------
         let commands = vec![
-            r#"Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0"#.to_string(),
-            r#"Set-Service -Name sshd -StartupType Automatic"#.to_string(),
-            r#"Start-Service sshd"#.to_string(),
-            r#"New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22"#.to_string(),
+            // Enable WinRM / PSRemoting (may warn on Public networks — safe)
+            r#"Enable-PSRemoting -Force"#.to_string(),
+
+            // Ensure WinRM service is configured and running
+            r#"Set-Service -Name WinRM -StartupType Automatic"#.to_string(),
+            r#"Start-Service WinRM"#.to_string(),
+
+            // Fully dynamic firewall enabling (fixes your previous errors)
+            r#"Get-NetFirewallRule | Where-Object {$_.DisplayName -like '*WinRM*' -and $_.Direction -eq 'Inbound'} | Enable-NetFirewallRule"#
+                .to_string(),
         ];
 
-        logger::action_running("Enabling SSH (install, start service, open firewall port)");
+        logger::action_running("Enabling WinRM (PSRemoting, service, firewall)");
 
         if cfg.dry_run {
-            logger::info("dry-run: would install OpenSSH Server and enable port 22");
+            logger::info("dry-run: would enable WinRM and open port 5985");
             let rec = ActionRecord {
                 test_id: cfg.test_id.clone(),
                 timestamp: Utc::now().to_rfc3339(),
-                action: "enable_ssh".into(),
+                action: "enable_winrm".into(),
                 status: "dry-run".into(),
                 details: "dry-run: no commands executed".into(),
                 artifact_path: None,
@@ -92,71 +99,92 @@ impl Simulation for EnableSshSimulation {
         }
 
         // -----------------------------------------------------
-        // Execute commands
+        // Execute enablement commands
         // -----------------------------------------------------
+        let mut firewall_status = "unknown".to_string();
+
         for cmd in &commands {
             logger::info(&format!("  → running: {}", cmd));
-            if let Err(e) = run_ps(cmd) {
-                logger::warn(&format!("Command failed: {}", e));
+
+            match run_ps(cmd) {
+                Ok(_) => {
+                    if cmd.contains("Get-NetFirewallRule") {
+                        firewall_status = "firewall rules enabled".into();
+                    }
+                }
+                Err(e) => {
+                    logger::warn(&format!("Command failed: {}", e));
+                    if cmd.contains("Get-NetFirewallRule") {
+                        firewall_status = "firewall rule error".into();
+                    }
+                }
             }
         }
 
         // -----------------------------------------------------
-        // Check port 22
+        // Verify WinRM port 5985 is reachable
         // -----------------------------------------------------
-        logger::info("checking whether port 22 is reachable...");
+        logger::info("checking whether WinRM port 5985 is reachable...");
 
-        let port_status = match TcpStream::connect("127.0.0.1:22") {
+        let port_status = match TcpStream::connect("127.0.0.1:5985") {
             Ok(_) => {
-                logger::info("SSH is ENABLED and reachable on port 22.");
+                logger::info("WinRM is ENABLED and reachable on port 5985.");
                 "reachable".to_string()
             }
             Err(e) => {
-                logger::warn(&format!("SSH NOT reachable: {}", e));
+                logger::warn(&format!("WinRM NOT reachable: {}", e));
                 format!("unreachable: {}", e)
             }
         };
 
+        // Determine overall WinRM status
+        let winrm_status = if port_status == "reachable" {
+            "enabled".to_string()
+        } else {
+            "enabled-but-not-reachable".to_string()
+        };
+
         // -----------------------------------------------------
-        // Telemetry
+        // Telemetry (JSONL + log files)
         // -----------------------------------------------------
-        logger::info("writing SSH enablement telemetry...");
+        logger::info("writing WinRM enablement telemetry...");
 
         let elapsed = start.elapsed();
         let parent = std::env::current_exe()
             .map(|p| p.display().to_string())
             .unwrap_or_else(|_| "<unknown>".to_string());
 
-        let t = EnableSshTelemetry {
+        let t = EnableWinRmTelemetry {
             test_id: cfg.test_id.clone(),
             timestamp: Utc::now().to_rfc3339(),
-            ssh_status: port_status.clone(),
+            winrm_status,
             commands_run: commands.clone(),
+            firewall_status,
             port_check: port_status.clone(),
             elapsed_ms: elapsed.as_millis(),
             parent,
         };
 
-        // JSONL + human-readable logs
         if let Some(dir) = telemetry_dir() {
             if let Err(e) = create_dir_all(&dir) {
                 logger::warn(&format!("could not create telemetry dir: {}", e));
             } else {
-                // jsonl
+                // JSONL
                 let mut jsonl = dir.clone();
-                jsonl.push(format!("enable_ssh_{}.jsonl", cfg.test_id));
+                jsonl.push(format!("enable_winrm_{}.jsonl", cfg.test_id));
                 if let Ok(mut jf) = OpenOptions::new().create(true).append(true).open(&jsonl) {
                     let _ = writeln!(jf, "{}", serde_json::to_string(&t).unwrap_or_default());
                 }
 
-                // human log
+                // Human log
                 let mut log = dir.clone();
-                log.push(format!("enable_ssh_{}.log", cfg.test_id));
+                log.push(format!("enable_winrm_{}.log", cfg.test_id));
                 if let Ok(mut lf) = OpenOptions::new().create(true).append(true).open(&log) {
                     let _ = writeln!(lf, "==============================================================");
                     let _ = writeln!(lf, "TEST ID   : {}", t.test_id);
                     let _ = writeln!(lf, "TIMESTAMP : {}", t.timestamp);
-                    let _ = writeln!(lf, "SSH STATUS: {}", t.ssh_status);
+                    let _ = writeln!(lf, "WINRM STATUS: {}", t.winrm_status);
+                    let _ = writeln!(lf, "FIREWALL STATUS: {}", t.firewall_status);
                     let _ = writeln!(lf, "PORT CHECK: {}", t.port_check);
                     let _ = writeln!(lf, "ELAPSED_MS: {}", t.elapsed_ms);
                     let _ = writeln!(lf, "PARENT    : {}", t.parent);
@@ -166,14 +194,17 @@ impl Simulation for EnableSshSimulation {
         }
 
         // -----------------------------------------------------
-        // Action record
+        // ActionRecord
         // -----------------------------------------------------
         let rec = ActionRecord {
             test_id: cfg.test_id.clone(),
             timestamp: Utc::now().to_rfc3339(),
-            action: "enable_ssh".into(),
+            action: "enable_winrm".into(),
             status: "written".into(),
-            details: format!("SSH status: {}", port_status),
+            details: format!(
+                "WinRM status: {}; Firewall: {}; Port: {}",
+                t.winrm_status, t.firewall_status, t.port_check
+            ),
             artifact_path: None,
         };
 

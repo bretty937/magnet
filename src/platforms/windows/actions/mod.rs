@@ -17,6 +17,7 @@ pub mod share_enum;
 pub mod network_port_scan;
 pub mod install_python;
 pub mod enable_ssh;
+pub mod enable_winrm;
 
 
 mod macros;

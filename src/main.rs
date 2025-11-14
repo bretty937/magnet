@@ -98,6 +98,7 @@ fn main() -> Result<()> {
             scheduled_task_sim::ScheduledTaskSim,
             add_admin_user::AdminUserAddSimulation,
             enable_ssh::EnableSshSimulation,
+            enable_winrm::EnableWinRMSimulation,
             enable_rdp::EnableRdpSimulation,
             proc_inj::ProcInjSim,
 
@@ -122,6 +123,7 @@ fn main() -> Result<()> {
             ScheduledTaskSim,
             AdminUserAddSimulation,
             EnableSshSimulation,
+            EnableWinRMSimulation,
             EnableRdpSimulation,
             ProcInjSim,   
             
