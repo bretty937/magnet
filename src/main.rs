@@ -82,6 +82,7 @@ fn main() -> Result<()> {
     {
         use platforms::windows::actions::{
             ps_defender_exclusions::PsDefenderExclusions,
+            install_python::InstallPythonSimulation,
             discovery_sim::DiscoverySim,
             ps_elev_whoami::PsElevWhoami,
             wifi_creds::WifiCreds,
@@ -104,6 +105,7 @@ fn main() -> Result<()> {
         register_windows_actions!(
             runner,
             PsDefenderExclusions,
+            InstallPythonSimulation,
             DiscoverySim,
             PsElevWhoami,
             WifiCreds,
