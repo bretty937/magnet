@@ -22,6 +22,7 @@ pub mod startup_exec;
 pub mod pwd_guessing;
 pub mod registry_persistence;
 pub mod record_mic;
+pub mod keylogger_sim;
 
 
 mod macros;
