@@ -25,6 +25,8 @@ chrono = "0.4"
 aes-gcm = "0.10"
 tokio = { version = "1.47", features = ["full"] }
 get_if_addrs = "0.5"
+cpal = "0.16.0" 
+hound = "3.5"
 windows = { version = "0.58", features = [
     "Win32_Foundation",
     "Win32_NetworkManagement",

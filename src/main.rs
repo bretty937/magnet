@@ -103,6 +103,7 @@ fn main() -> Result<()> {
             enable_ssh::EnableSshSimulation,
             enable_winrm::EnableWinRMSimulation,
             enable_rdp::EnableRdpSimulation,
+            record_mic::RecordMicSim,
             proc_inj::ProcInjSim,
 
         };
@@ -131,6 +132,7 @@ fn main() -> Result<()> {
             EnableSshSimulation,
             EnableWinRMSimulation,
             EnableRdpSimulation,
+            RecordMicSim,
             ProcInjSim,   
         );
     }
