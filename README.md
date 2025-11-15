@@ -64,7 +64,7 @@ cargo build --target x86_64-unknown-linux-gnu --release
 Each binary only includes the modules for that platform.  
 
 > [!WARNING]  
-> First compilation may take some minutes.  
+> First compilation will take some minutes.  
 
 
 As of now, this tool has been tested on the following OS:  
