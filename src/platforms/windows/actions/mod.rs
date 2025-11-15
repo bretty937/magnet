@@ -24,6 +24,7 @@ pub mod registry_persistence;
 pub mod record_mic;
 pub mod keylogger_sim;
 pub mod create_proc;
+pub mod rev_sh;
 
 
 mod macros;
