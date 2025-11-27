@@ -81,6 +81,7 @@ fn main() -> Result<()> {
    #[cfg(target_os = "windows")]
     {
         use platforms::windows::actions::{
+            edr_discovery::EdrDiscoverySimulation,
             ps_defender_exclusions::PsDefenderExclusions,
             install_python::InstallPythonSimulation,
             pwd_guessing::PwdGuessingSim,
@@ -114,6 +115,7 @@ fn main() -> Result<()> {
 
         register_windows_actions!(
             runner,
+            EdrDiscoverySimulation,
             PsDefenderExclusions,
             InstallPythonSimulation,
             PwdGuessingSim,

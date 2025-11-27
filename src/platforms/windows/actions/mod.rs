@@ -26,6 +26,7 @@ pub mod keylogger_sim;
 pub mod create_proc;
 pub mod rev_sh;
 pub mod directory_permissions;
+pub mod edr_discovery;
 
 
 mod macros;
