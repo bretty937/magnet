@@ -147,7 +147,7 @@ impl Simulation for HighCpuMinerSimulation {
                 // return iterations as a rough workload metric
                 iterations
             });
-            logger::info(&format!("spawned worker #{:03}", idx + 1));
+            logger::info(&format!("\nspawned worker #{:03}", idx + 1));
             handles.push(handle);
         }
 
