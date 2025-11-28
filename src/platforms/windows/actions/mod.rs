@@ -27,6 +27,7 @@ pub mod create_proc;
 pub mod rev_sh;
 pub mod directory_permissions;
 pub mod edr_discovery;
+pub mod cred_manager_access;
 
 
 mod macros;
