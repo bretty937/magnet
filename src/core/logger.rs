@@ -1,13 +1,27 @@
 use colored::*;
 use std::time::Duration;
 
-/// Small logger helper for Magnet (Neo-Offensive / A2 theme)
-///
-/// Provides a handful of convenient functions that modules call
-/// to print consistent, colorful output.
+/// Initialize logger (enable ANSI on Windows admin shells)
 pub fn init() {
-    // If the terminal doesn't support colors, users can override via env.
-    // colored crate tries to detect; we don't force anything here.
+    #[cfg(windows)]
+    enable_ansi_colors();
+}
+
+#[cfg(windows)]
+fn enable_ansi_colors() {
+    use winapi::um::consoleapi::{GetConsoleMode, SetConsoleMode};
+    use winapi::um::processenv::GetStdHandle;
+    use winapi::um::winbase::STD_OUTPUT_HANDLE;
+    use winapi::um::wincon::ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+
+    unsafe {
+        let handle = GetStdHandle(STD_OUTPUT_HANDLE);
+        let mut mode: u32 = 0;
+
+        if GetConsoleMode(handle, &mut mode) != 0 {
+            SetConsoleMode(handle, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+        }
+    }
 }
 
 /// Print the app header
@@ -36,22 +50,21 @@ pub fn action_running(action: &str) {
     let arrow = "  →".bright_black();
     let act = format!(" {}", action).white();
     print!("{}{}", arrow, act);
-    // leave cursor — module should print status via action_ok or action_fail
 }
 
-/// Print that the action succeeded (completes the prior line)
+/// Print that the action succeeded
 pub fn action_ok() {
     let ok = " ✅".bright_green().bold();
     println!("   {}", ok);
 }
 
-/// Print that the action failed with a message
+/// Print that the action failed
 pub fn action_fail(msg: &str) {
     let fail = " ❌".bright_red().bold();
     println!("   {} {}", fail, msg.bright_red());
 }
 
-/// Print an info line (used for details)
+/// Print an info line
 pub fn info(msg: &str) {
     println!("   {}", msg.dimmed());
 }
@@ -68,7 +81,7 @@ pub fn error(msg: &str) {
     println!("{} {}", e, msg.red().bold());
 }
 
-/// Print the final summary footer with elapsed time (Duration)
+/// Final summary footer
 pub fn summary(elapsed: Duration) {
     let trophy = "🏁".bright_magenta();
     let secs = elapsed.as_secs_f64();
